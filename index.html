@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Berrylime</title>
+<meta name="description" content="Berrylime makes small, careful iPhone apps: Daily Palate and Mochi.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Nunito:wght@500;700;800&display=swap">
+<style>
+  :root{--bg:#FBF7F0;--ink:#2B2622;--mute:#7A716A;--line:#E8E0D4;--card:#FFFDF9;--lime:#7FA83A;--mochi:#D9558C;--palate:#B5522A;--fandom:#2F6FB5}
+  @media (prefers-color-scheme:dark){:root{--bg:#1E1A17;--ink:#F3ECE3;--mute:#A79D92;--line:#3B3430;--card:#292420;--lime:#A6CF5E;--mochi:#F07AAA;--palate:#E0794E;--fandom:#7FB0EE}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-size:18px;line-height:1.5;padding-block:0 64px;padding-inline:20px}
+  .wrap{max-width:640px;margin:0 auto}
+  header{padding-block:56px 24px}
+  .mark{display:inline-flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:13px;color:var(--lime)}
+  .mark i{width:14px;height:14px;border-radius:50%;background:var(--lime);display:inline-block}
+  h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:40px;line-height:1.1;margin:14px 0 10px;letter-spacing:-.01em;text-wrap:balance}
+  .lede{color:var(--mute);margin:0;max-width:52ch}
+  h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:24px;margin:40px 0 12px}
+  .apps{display:grid;gap:12px}
+  .app{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--line);border-radius:16px;padding:18px 20px}
+  .app[data-a="palate"]{border-left-color:var(--palate)} .app[data-a="mochi"]{border-left-color:var(--mochi)}
+  .app h3{margin:0 0 6px;font-size:20px} .app p{margin:0;color:var(--mute)} .app small{display:block;margin-top:8px;font-size:13px;color:var(--mute)}
+  footer{margin-top:48px;color:var(--mute);font-size:14px;border-top:1px solid var(--line);padding-top:16px}
+  a{color:inherit}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="mark"><i></i> Berrylime</span>
+    <h1>Small, careful apps for the phone in your hand.</h1>
+    <p class="lede">Berrylime is an independent studio building iPhone apps that respect your attention: one job each, no accounts, nothing that makes you feel bad for opening it.</p>
+  </header>
+
+  <h2>What we're building</h2>
+  <div class="apps">
+    <div class="app" data-a="palate">
+      <h3>Daily Palate</h3>
+      <p>Plan tomorrow's food tonight. Three parts of the day, the foods you actually eat, room left on purpose for what the day brings. Calories exist — you just don't stare at them all day.</p>
+      <small>iPhone · in testing</small>
+    </div>
+    <div class="app" data-a="mochi">
+      <h3>Mochi</h3>
+      <p>Mochi shows you today from your own Reminders and Calendar, and changes it when you tell her. For anyone whose to-do list makes them feel bad.</p>
+      <small>iPhone · in testing</small>
+    </div>
+  </div>
+
+  <h2>Contact</h2>
+  <p>Blake Page · <a href="mailto:bpage322@gmail.com">bpage322@gmail.com</a></p>
+
+  <footer>© 2026 Berrylime. Privacy policies and support pages for each app are published with the app.</footer>
+</div>
+</body>
+</html>
