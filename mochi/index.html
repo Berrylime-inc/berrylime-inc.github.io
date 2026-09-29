@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mochi — Reminders that don't nag</title>
+<meta name="description" content="Mochi shows you today from your own Reminders and Calendar, and changes it when you tell her. No guilt, no red, no account. For iPhone.">
+<meta property="og:title" content="Mochi — Reminders that don't nag">
+<meta property="og:description" content="Tap her and say it: “move the vet to Friday” and your day changes. Your own Reminders and Calendar on one gentle page.">
+<meta property="og:image" content="https://berrylime-inc.github.io/mochi/assets/shot-1-her-room-your-day.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#FBEFF2">
+<!-- LAUNCH: once the app is live, uncomment the Smart App Banner and swap the "coming soon" pills for Apple's badge. -->
+<!-- <meta name="apple-itunes-app" content="app-id=6812625992"> -->
+<link rel="icon" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/icon-256.png">
+<style>
+  :root{
+    --bg:#FBF7F0; --blush:#FBE4EA; --ink:#2E2327; --mute:#7C6B70; --line:#EADFD6; --card:#FFFDF9;
+    --mochi:#D9558C; --mochi-ink:#FFFFFF; --soft:#F7D3DF; --shadow:0 18px 50px -24px rgba(120,40,70,.35);
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#1D1719; --blush:#2A1E23; --ink:#F6ECEE; --mute:#B6A3A9; --line:#3A2E32; --card:#261E21;
+    --mochi:#F07AAA; --mochi-ink:#1D1719; --soft:#4A2F3A; --shadow:0 18px 50px -24px rgba(0,0,0,.7);
+  }}
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    font-size:18px;line-height:1.55;overflow-x:hidden}
+  a{color:inherit}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  .pixel{image-rendering:pixelated;image-rendering:crisp-edges}
+
+  /* nav */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-size:20px}
+  .brand img{width:34px;height:34px;border-radius:9px}
+  nav .links{display:flex;gap:18px;font-size:15px;color:var(--mute)}
+  nav .links a{text-decoration:none}
+
+  /* hero */
+  .hero{background:linear-gradient(180deg,var(--blush),var(--bg));padding-bottom:40px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:center;padding-top:28px}
+  h1{font-size:clamp(40px,6vw,64px);line-height:1.02;letter-spacing:-.02em;margin:0 0 16px;font-weight:800}
+  .lede{font-size:clamp(18px,2.2vw,21px);color:var(--mute);margin:0 0 26px;max-width:30ch}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .pill{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 22px;border-radius:999px;white-space:nowrap;max-width:100%;
+    background:var(--ink);color:var(--bg);font-weight:700;font-size:17px;text-decoration:none}
+  .pill small{font-weight:600;opacity:.7;font-size:13px}
+  .facts{font-size:15px;color:var(--mute);margin-top:16px}
+
+  /* the room */
+  .stage-card{background:var(--card);border-radius:28px;padding:14px;box-shadow:var(--shadow);border:1px solid var(--line)}
+  .stage{position:relative;width:100%;aspect-ratio:174/81;border-radius:18px;overflow:hidden;
+    background:url(assets/room-day.png) center/100% 100% no-repeat;image-rendering:pixelated;transition:background-image .2s}
+  .her{position:absolute;left:calc(63/174*100%);top:calc(23/81*100%);width:calc(48/174*100%);height:calc(48/81*100%);
+    border:0;padding:0;margin:0;cursor:pointer;background:url(assets/mochi-idle.png) 0 0/200% 100% no-repeat;image-rendering:pixelated;
+    -webkit-tap-highlight-color:transparent}
+  .her:focus-visible{outline:3px solid var(--mochi);outline-offset:2px;border-radius:6px}
+  .her.blink{background-position:100% 0}
+  .her.jump{background-image:url(assets/mochi-jump.png);background-size:900% 100%;animation:jump .9s steps(8) 1 forwards}
+  @keyframes jump{from{background-position:0 0}to{background-position:100% 0}}
+  .bubble{position:absolute;left:50%;top:6%;transform:translateX(-50%);background:#fff;color:#2E2327;font-size:clamp(12px,1.6vw,15px);
+    font-weight:600;padding:6px 12px;border-radius:12px;white-space:nowrap;box-shadow:0 2px 0 rgba(0,0,0,.08);transition:opacity .25s}
+  .bubble::after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-bottom:0;border-top-color:#fff}
+  .stage-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 14px;padding:14px 6px 4px;font-size:14px;color:var(--mute)}
+  .stage-foot > span{flex:1 1 9em}
+  .swatches{display:flex;gap:8px}
+  .sw{width:30px;height:30px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
+  .sw[aria-pressed=true]{box-shadow:0 0 0 2px var(--mochi)}
+  /* swatch hit area stays 44pt even though the dot is 30 */
+  .sw{position:relative}.sw::before{content:"";position:absolute;inset:-7px}
+
+  /* sections */
+  section{padding:64px 0}
+  h2{font-size:clamp(28px,4vw,40px);line-height:1.1;letter-spacing:-.015em;margin:0 0 14px;font-weight:800}
+  .kicker{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--mochi);margin:0 0 10px}
+  .say{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0;padding:0;list-style:none}
+  .say li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-weight:600;font-size:17px}
+  .say li::before{content:"“"}.say li::after{content:"”"}
+  .sub{color:var(--mute);max-width:52ch;margin:0}
+
+  .shots{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:30px}
+  .shots img{width:100%;height:auto;border-radius:22px;box-shadow:var(--shadow);display:block}
+
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px}
+  .tile h3{margin:0 0 8px;font-size:21px;line-height:1.2}
+  .tile p{margin:0;color:var(--mute);font-size:16px}
+  .tile .sprite{width:72px;height:72px;margin-bottom:10px;background:url(assets/mochi-scribble.png) 0 0/900% 100% no-repeat;image-rendering:pixelated;animation:scribble 1.8s steps(8) infinite}
+  .tile .sprite.sip{background-image:url(assets/mochi-sip.png);animation-duration:2.2s}
+  @keyframes scribble{from{background-position:0 0}to{background-position:100% 0}}
+  .rooms{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px}
+  .rooms img{width:100%;aspect-ratio:174/81;object-fit:cover;border-radius:8px;display:block}
+
+  .close{text-align:center;background:linear-gradient(180deg,var(--bg),var(--blush))}
+  .close h2{max-width:22ch;margin:0 auto 18px}
+  .close .cta{justify-content:center}
+
+  .press{border-top:1px solid var(--line)}
+  .press-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:30px}
+  .press dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:16px}
+  .press dt{color:var(--mute)}.press dd{margin:0}
+  .press ul{margin:10px 0 0;padding-left:20px;font-size:16px}
+
+  footer{padding:28px 0 48px;color:var(--mute);font-size:14px;border-top:1px solid var(--line)}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+
+  @media (max-width:820px){
+    .hero-grid{grid-template-columns:1fr;gap:28px}
+    .hero-copy{order:2}
+    .shots{grid-template-columns:repeat(4,72%);overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;margin-right:-20px;padding-right:20px}
+    .shots img{scroll-snap-align:start}
+    .three,.press-grid{grid-template-columns:1fr}
+    nav .links a.hide-s{display:none}
+    .say{gap:8px}.say li{font-size:15px;padding:8px 13px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .her.jump,.tile .sprite{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="./"><img src="assets/icon-256.png" alt="">Mochi</a>
+      <div class="links"><a class="hide-s" href="#press">Press</a><a href="support.html">Support</a><a href="privacy.html">Privacy</a></div>
+    </nav>
+
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1>Reminders that don't nag.</h1>
+        <p class="lede">Mochi shows you today from your own Reminders and Calendar, and changes it when you tell her.</p>
+        <div class="cta">
+          <span class="pill" aria-label="Coming soon to the App Store">Coming soon <small>App Store · iPhone</small></span>
+        </div>
+        <p class="facts">Free. No account. No ads. No tracking.</p>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage" id="stage" role="img" aria-label="Mochi standing in her pixel-art room">
+          <div class="bubble" id="bubble">The vet, then the parcel, then stretch.</div>
+          <button class="her pixel" id="her" type="button" aria-label="Tap Mochi to tick one off"></button>
+        </div>
+        <div class="stage-foot">
+          <span>Tap her to tick one off</span>
+          <div class="swatches" role="group" aria-label="Room colour">
+            <button class="sw" type="button" data-room="day" aria-pressed="true" aria-label="Berry" style="background:#E7A6BD"></button>
+            <button class="sw" type="button" data-room="mint" aria-pressed="false" aria-label="Mint" style="background:#A9D9C0"></button>
+            <button class="sw" type="button" data-room="sky" aria-pressed="false" aria-label="Sky" style="background:#A8CBEB"></button>
+            <button class="sw" type="button" data-room="lavender" aria-pressed="false" aria-label="Lavender" style="background:#C6B4E6"></button>
+            <button class="sw" type="button" data-room="peach" aria-pressed="false" aria-label="Peach" style="background:#F3C0A2"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <p class="kicker">Tap her and say it</p>
+      <h2>Say it. It moves.</h2>
+      <p class="sub">She does it in your real Reminders and tells you in one line, with Undo right there. Ask her, too.</p>
+      <ul class="say">
+        <li>Dentist tomorrow at 3.</li>
+        <li>Move the vet to Friday.</li>
+        <li>Not doing the gym today.</li>
+        <li>Clear my afternoon.</li>
+        <li>Done with the gym.</li>
+        <li>What's next?</li>
+        <li>What's on Friday?</li>
+      </ul>
+      <div class="shots">
+        <img src="assets/shot-1-her-room-your-day.jpg" width="506" height="1100" loading="lazy" alt="Her room above your day: your reminders and calendar in the morning, afternoon and evening.">
+        <img src="assets/shot-2-say-it-it-moves.jpg" width="506" height="1100" loading="lazy" alt="Typing “move the vet to Friday” and the reminder moves, with Undo.">
+        <img src="assets/shot-3-no-guilt-no-red.jpg" width="506" height="1100" loading="lazy" alt="Something missed is asked about once, gently. Nothing red.">
+        <img src="assets/shot-4-her-room-in-your-colour.jpg" width="506" height="1100" loading="lazy" alt="Five room colours; her widget and Lock Screen follow.">
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="kicker">Why she's different</p>
+      <h2>Your list, without the dread.</h2>
+      <div class="three">
+        <div class="tile">
+          <div class="sprite" role="img" aria-label="Mochi writing at her desk"></div>
+          <h3>One page, one day</h3>
+          <p>Your reminders and your calendar together, in the parts of your day. Nothing lives inside Mochi — she reads the Reminders and Calendar you already have and never keeps a second copy.</p>
+        </div>
+        <div class="tile">
+          <div class="sprite sip" role="img" aria-label="Mochi sipping from her mug"></div>
+          <h3>She never makes you feel bad</h3>
+          <p>No overdue pile. No red. No “you still haven't.” Something you didn't get to is asked about once, gently — then she's quiet. When it's all too much, ask her to walk you through it, one thing at a time.</p>
+        </div>
+        <div class="tile">
+          <div class="rooms" aria-hidden="true"><img class="pixel" src="assets/room-day.png" alt=""><img class="pixel" src="assets/room-mint.png" alt=""><img class="pixel" src="assets/room-sky.png" alt=""><img class="pixel" src="assets/room-lavender.png" alt=""><img class="pixel" src="assets/room-peach.png" alt=""></div>
+          <h3>Her room, in your colour</h3>
+          <p>Berry, mint, sky, lavender or peach. One tap, and her room, her Home Screen widget and her Lock Screen wallpaper all follow.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="close">
+    <div class="wrap">
+      <h2>Made for people who already have a Reminders app and dread opening it.</h2>
+      <div class="cta">
+        <span class="pill">Coming soon <small>App Store · iPhone</small></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="press" id="press">
+    <div class="wrap press-grid">
+      <div>
+        <p class="kicker">For press</p>
+        <h2>Mochi, in a paragraph</h2>
+        <p class="sub">Mochi is a free iPhone app for people whose to-do list makes them feel bad. A small pixel-art companion shows today from the person's own Apple Reminders and Calendar, and changes it when they tell her in a plain sentence — “move the vet to Friday” — with Undo. No account, no overdue pile, no red, and nothing kept outside Apple's own apps. Made by Berrylime Labs, a one-person studio.</p>
+      </div>
+      <div>
+        <dl>
+          <dt>Price</dt><dd>Free</dd>
+          <dt>Platform</dt><dd>iPhone, iOS 26.5 or later</dd>
+          <dt>Category</dt><dd>Productivity</dd>
+          <dt>Contact</dt><dd><a href="mailto:support@berrylimeapps.com">support@berrylimeapps.com</a></dd>
+        </dl>
+        <ul>
+          <li><a href="assets/icon-256.png">App icon</a></li>
+          <li><a href="assets/shot-1-her-room-your-day.jpg">Screenshots</a> (four, 6.9-inch)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Berrylime Labs LLC</span>
+    <span><a href="support.html">Support</a> · <a href="privacy.html">Privacy</a> · <a href="mailto:support@berrylimeapps.com">support@berrylimeapps.com</a></span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const her = document.getElementById('her'), bubble = document.getElementById('bubble'), stage = document.getElementById('stage');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // her real lines: the brief from her room, one "Done —" per tick, then the day's close. A jump only ever means done.
+  const lines = ['The vet, then the parcel, then stretch.', 'Done — Vet.', 'Done — Parcel.', 'Done — Stretch.', 'All done for today.'];
+  let n = 0, jumping = false;
+
+  // a blink every few seconds, never while she jumps
+  const blink = () => {
+    if (!jumping && !still) { her.classList.add('blink'); setTimeout(() => her.classList.remove('blink'), 140); }
+    setTimeout(blink, 2600 + Math.random() * 3200);
+  };
+  setTimeout(blink, 1800);
+
+  her.addEventListener('click', () => {
+    if (jumping) return;
+    n = (n + 1) % lines.length;
+    bubble.textContent = lines[n];
+    if (n === 0 || still) return;
+    jumping = true; her.classList.remove('blink'); her.classList.add('jump');
+    her.addEventListener('animationend', () => { her.classList.remove('jump'); jumping = false; }, { once: true });
+  });
+
+  document.querySelectorAll('.sw').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.sw').forEach(x => x.setAttribute('aria-pressed', x === b));
+    stage.style.backgroundImage = `url(assets/room-${b.dataset.room}.png)`;
+  }));
+  // warm the other rooms and her jump so a tap never flashes empty
+  ['room-mint','room-sky','room-lavender','room-peach','mochi-jump'].forEach(r => { const i = new Image(); i.src = `assets/${r}.png`; });
+})();
+</script>
+</body>
+</html>
