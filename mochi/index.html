@@ -1,284 +1,565 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-launched="false">
+<!-- LAUNCH DAY: set data-launched="true" above (the "Coming soon" pills become App Store buttons),
+     and uncomment the Smart App Banner below. -->
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Mochi — Reminders that don't nag</title>
-<meta name="description" content="Mochi shows you today from your own Reminders and Calendar, and changes it when you tell her. No guilt, no red, no account. For iPhone.">
-<meta property="og:title" content="Mochi — Reminders that don't nag">
+<meta property="og:title" content="Mochi — A to-do list that's fine to open">
 <meta property="og:description" content="Tap her and say it: “move the vet to Friday” and your day changes. Your own Reminders and Calendar on one gentle page.">
-<meta property="og:image" content="https://berrylime-inc.github.io/mochi/assets/shot-1-her-room-your-day.jpg">
+<meta property="og:image" content="https://berrylime-inc.github.io/mochi/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://berrylime-inc.github.io/mochi/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#FBEFF2">
-<!-- LAUNCH: once the app is live, uncomment the Smart App Banner and swap the "coming soon" pills for Apple's badge. -->
+<meta name="theme-color" content="#fff7f4">
 <!-- <meta name="apple-itunes-app" content="app-id=6812625992"> -->
-<link rel="icon" href="assets/favicon.png">
-<link rel="apple-touch-icon" href="assets/icon-256.png">
+<link rel="icon" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/icon-256.png">
+<title>Mochi — A to-do list that's fine to open</title>
+<meta name="description" content="A to-do list that's fine to open. Mochi shows you today from your own Reminders and Calendar, and changes it when you tell her.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Pixelify+Sans:wght@500;600&display=swap">
 <style>
-  :root{
-    --bg:#FBF7F0; --blush:#FBE4EA; --ink:#2E2327; --mute:#7C6B70; --line:#EADFD6; --card:#FFFDF9;
-    --mochi:#D9558C; --mochi-ink:#FFFFFF; --soft:#F7D3DF; --shadow:0 18px 50px -24px rgba(120,40,70,.35);
+/* Layout: a warm page with her pixel room as the stage; each section pairs one plain promise with the thing itself working. */
+:root {
+  --bg: #fff7f4;
+  --bg-2: #ffeef2;
+  --card: #ffffff;
+  --ink: #3e2233;
+  --muted: #8a6475;
+  --line: #f3d9e3;
+  --accent: #e85991;
+  --tint: #ffe8f2;
+  --on-accent: #ffffff;
+  --shadow: 0 18px 40px -18px rgba(122, 58, 88, .35);
+
+  --display: "Fredoka", "Nunito", ui-rounded, system-ui, sans-serif;
+  --body: "Nunito", ui-rounded, system-ui, -apple-system, sans-serif;
+  --pixel: "Pixelify Sans", "Fredoka", ui-rounded, monospace;
+
+  --gutter: clamp(16px, 4vw, 40px);
+  --max: 1120px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1d1a2c; --bg-2: #25203a; --card: #2b2542; --ink: #f5eef7; --muted: #b9a9c7;
+    --line: #3b3456; --tint: #3a2a45; --shadow: 0 18px 40px -18px rgba(0, 0, 0, .6);
+    color-scheme: dark;
   }
-  @media (prefers-color-scheme:dark){:root{
-    --bg:#1D1719; --blush:#2A1E23; --ink:#F6ECEE; --mute:#B6A3A9; --line:#3A2E32; --card:#261E21;
-    --mochi:#F07AAA; --mochi-ink:#1D1719; --soft:#4A2F3A; --shadow:0 18px 50px -24px rgba(0,0,0,.7);
-  }}
-  *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
-    font-size:18px;line-height:1.55;overflow-x:hidden}
-  a{color:inherit}
-  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
-  .pixel{image-rendering:pixelated;image-rendering:crisp-edges}
+}
+:root[data-theme="dark"] {
+  --bg: #1d1a2c; --bg-2: #25203a; --card: #2b2542; --ink: #f5eef7; --muted: #b9a9c7;
+  --line: #3b3456; --tint: #3a2a45; --shadow: 0 18px 40px -18px rgba(0, 0, 0, .6);
+  color-scheme: dark;
+}
 
-  /* nav */
-  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
-  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-size:20px}
-  .brand img{width:34px;height:34px;border-radius:9px}
-  nav .links{display:flex;gap:18px;font-size:15px;color:var(--mute)}
-  nav .links a{text-decoration:none}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 17px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+img.px { image-rendering: pixelated; image-rendering: crisp-edges; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 10px; }
 
-  /* hero */
-  .hero{background:linear-gradient(180deg,var(--blush),var(--bg));padding-bottom:40px}
-  .hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:center;padding-top:28px}
-  h1{font-size:clamp(40px,6vw,64px);line-height:1.02;letter-spacing:-.02em;margin:0 0 16px;font-weight:800}
-  .lede{font-size:clamp(18px,2.2vw,21px);color:var(--mute);margin:0 0 26px;max-width:30ch}
-  .cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-  .pill{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 22px;border-radius:999px;white-space:nowrap;max-width:100%;
-    background:var(--ink);color:var(--bg);font-weight:700;font-size:17px;text-decoration:none}
-  .pill small{font-weight:600;opacity:.7;font-size:13px}
-  .facts{font-size:15px;color:var(--mute);margin-top:16px}
+.wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--gutter); }
 
-  /* the room */
-  .stage-card{background:var(--card);border-radius:28px;padding:14px;box-shadow:var(--shadow);border:1px solid var(--line)}
-  .stage{position:relative;width:100%;aspect-ratio:174/81;border-radius:18px;overflow:hidden;
-    background:url(assets/room-day.png) center/100% 100% no-repeat;image-rendering:pixelated;transition:background-image .2s}
-  .her{position:absolute;left:calc(63/174*100%);top:calc(23/81*100%);width:calc(48/174*100%);height:calc(48/81*100%);
-    border:0;padding:0;margin:0;cursor:pointer;background:url(assets/mochi-idle.png) 0 0/200% 100% no-repeat;image-rendering:pixelated;
-    -webkit-tap-highlight-color:transparent}
-  .her:focus-visible{outline:3px solid var(--mochi);outline-offset:2px;border-radius:6px}
-  .her.blink{background-position:100% 0}
-  .her.jump{background-image:url(assets/mochi-jump.png);background-size:900% 100%;animation:jump .9s steps(8) 1 forwards}
-  @keyframes jump{from{background-position:0 0}to{background-position:100% 0}}
-  .bubble{position:absolute;left:50%;top:6%;transform:translateX(-50%);background:#fff;color:#2E2327;font-size:clamp(12px,1.6vw,15px);
-    font-weight:600;padding:6px 12px;border-radius:12px;white-space:nowrap;box-shadow:0 2px 0 rgba(0,0,0,.08);transition:opacity .25s}
-  .bubble::after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-bottom:0;border-top-color:#fff}
-  .stage-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 14px;padding:14px 6px 4px;font-size:14px;color:var(--mute)}
-  .stage-foot > span{flex:1 1 9em}
-  .swatches{display:flex;gap:8px}
-  .sw{width:30px;height:30px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
-  .sw[aria-pressed=true]{box-shadow:0 0 0 2px var(--mochi)}
-  /* swatch hit area stays 44pt even though the dot is 30 */
-  .sw{position:relative}.sw::before{content:"";position:absolute;inset:-7px}
+/* ---- nav ---- */
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 600; font-size: 22px; }
+.brand img { width: 36px; height: 36px; border-radius: 9px; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
 
-  /* sections */
-  section{padding:64px 0}
-  h2{font-size:clamp(28px,4vw,40px);line-height:1.1;letter-spacing:-.015em;margin:0 0 14px;font-weight:800}
-  .kicker{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--mochi);margin:0 0 10px}
-  .say{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0;padding:0;list-style:none}
-  .say li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-weight:600;font-size:17px}
-  .say li::before{content:"“"}.say li::after{content:"”"}
-  .sub{color:var(--mute);max-width:52ch;margin:0}
+.store {
+  display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+  background: var(--ink); color: var(--bg); border-radius: 14px;
+  padding: 10px 18px 10px 14px; font-weight: 700; line-height: 1.1;
+  transition: transform .15s ease;
+}
+.store:hover { transform: translateY(-1px); }
+.store svg { width: 22px; height: 22px; fill: currentColor; flex: none; }
+.store small { display: block; font-size: 11px; font-weight: 600; opacity: .8; letter-spacing: .02em; }
+.store span { font-size: 17px; }
+.store.sm { padding: 8px 14px 8px 12px; border-radius: 12px; }
+.store.sm span { font-size: 15px; }
 
-  .shots{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:30px}
-  .shots img{width:100%;height:auto;border-radius:22px;box-shadow:var(--shadow);display:block}
+/* ---- hero ---- */
+.hero { display: grid; grid-template-columns: .92fr 1.3fr; gap: clamp(28px, 5vw, 64px); align-items: center; padding-block: clamp(24px, 6vw, 72px) clamp(40px, 7vw, 88px); }
+.hero > * { min-width: 0; }
+.eyebrow { font-family: var(--pixel); font-weight: 500; font-size: 15px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(42px, 6.4vw, 76px); line-height: 1.0; letter-spacing: -.02em; margin: 0 0 20px; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--accent); }
+.lede { font-size: clamp(18px, 1.6vw, 21px); color: var(--muted); max-width: 30em; margin: 0 0 28px; text-wrap: pretty; }
+.fine { font-size: 14px; color: var(--muted); margin-top: 14px; font-weight: 600; }
+.cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
 
-  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
-  .tile{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px}
-  .tile h3{margin:0 0 8px;font-size:21px;line-height:1.2}
-  .tile p{margin:0;color:var(--mute);font-size:16px}
-  .tile .sprite{width:72px;height:72px;margin-bottom:10px;background:url(assets/mochi-scribble.png) 0 0/900% 100% no-repeat;image-rendering:pixelated;animation:scribble 1.8s steps(8) infinite}
-  .tile .sprite.sip{background-image:url(assets/mochi-sip.png);animation-duration:2.2s}
-  @keyframes scribble{from{background-position:0 0}to{background-position:100% 0}}
-  .rooms{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px}
-  .rooms img{width:100%;aspect-ratio:174/81;object-fit:cover;border-radius:8px;display:block}
+/* the stage: her room, her, her bubble */
+.stage { position: relative; }
+.room {
+  position: relative; aspect-ratio: 174 / 81; width: 100%; max-width: 100%;
+  border-radius: 22px; overflow: hidden; box-shadow: var(--shadow);
+  border: 3px solid var(--card); background: var(--tint);
+}
+.room > img.bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .45s ease; }
+.room > img.bg.next { opacity: 0; }
+.her { position: absolute; left: 36%; bottom: 3%; height: 60%; width: auto; aspect-ratio: 1; }
+.bubble {
+  position: absolute; left: 50%; top: 6%; transform: translateX(-30%);
+  background: #fff; color: #3e2233; border-radius: 14px; padding: 8px 14px;
+  font-family: var(--pixel); font-weight: 500; font-size: clamp(12px, 1.35vw, 16px); line-height: 1.25;
+  box-shadow: 0 4px 0 rgba(62,34,51,.12); max-width: 56%; min-height: 1.25em;
+}
+.bubble::after { content: ""; position: absolute; left: 22%; bottom: -8px; border: 8px solid transparent; border-top-color: #fff; border-bottom: 0; }
 
-  .close{text-align:center;background:linear-gradient(180deg,var(--bg),var(--blush))}
-  .close h2{max-width:22ch;margin:0 auto 18px}
-  .close .cta{justify-content:center}
+.bar {
+  margin-top: 14px; display: flex; align-items: center; gap: 12px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 10px 12px 10px 14px;
+  box-shadow: 0 8px 24px -16px rgba(122,58,88,.4);
+}
+.bar .face { width: 34px; height: 34px; border-radius: 50%; background: var(--tint); flex: none; overflow: hidden; }
+.bar .face img { width: 100%; height: 100%; }
+.bar .name { font-family: var(--display); font-weight: 600; color: var(--accent); }
+.bar .typed { flex: 1; min-width: 0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar .mic { width: 38px; height: 38px; border-radius: 12px; background: var(--tint); display: grid; place-items: center; flex: none; }
+.bar .mic svg { width: 18px; height: 18px; fill: var(--accent); }
 
-  .press{border-top:1px solid var(--line)}
-  .press-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:30px}
-  .press dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:16px}
-  .press dt{color:var(--mute)}.press dd{margin:0}
-  .press ul{margin:10px 0 0;padding-left:20px;font-size:16px}
+/* ---- sections ---- */
+section.band { padding-block: clamp(56px, 9vw, 110px); }
+section.band.alt { background: var(--bg-2); }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 6vw, 80px); align-items: center; }
+.split > * { min-width: 0; }
+.split.flip > :first-child { order: 2; }
+h2 { font-family: var(--display); font-weight: 700; font-size: clamp(32px, 4.4vw, 52px); line-height: 1.05; letter-spacing: -.015em; margin: 0 0 16px; text-wrap: balance; }
+.copy p { color: var(--muted); font-size: 18px; max-width: 30em; margin: 0 0 14px; }
+.copy p strong { color: var(--ink); }
 
-  footer{padding:28px 0 48px;color:var(--mute);font-size:14px;border-top:1px solid var(--line)}
-  footer .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+/* demo: the bar where the letters land, and her one line back */
+.demo { background: var(--card); border: 1px solid var(--line); border-radius: 26px; padding: 22px; box-shadow: var(--shadow); }
+.demo .said { min-height: 3.4em; display: flex; align-items: flex-end; }
+.receipt { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; width: 100%;
+  font-weight: 700; font-size: 17px; opacity: 0; transform: translateY(6px); transition: opacity .25s ease, transform .25s ease; }
+.receipt.on { opacity: 1; transform: none; }
+.receipt .undo { color: var(--accent); font-weight: 800; flex: none; }
+.demo hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
+.line { display: flex; align-items: center; gap: 12px; min-height: 44px; }
+.line .face { width: 34px; height: 34px; border-radius: 50%; overflow: hidden; background: var(--tint); flex: none; }
+.line .face img { width: 100%; height: 100%; }
+.letters { flex: 1; min-width: 0; font-size: 20px; font-weight: 700; white-space: pre; overflow: hidden; }
+.letters i { font-style: normal; display: inline-block; animation: land .36s cubic-bezier(.3,1.6,.5,1) both; }
+@keyframes land { from { transform: translateY(-10px) scale(2.4); opacity: 0; } to { transform: none; opacity: 1; } }
+.caret { display: inline-block; width: 2px; height: 1.1em; background: var(--accent); vertical-align: -3px; margin-left: 1px; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.examples { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.examples button {
+  font: 600 14px var(--body); color: var(--ink); background: var(--tint); border: 0; border-radius: 999px; padding: 7px 13px; cursor: pointer;
+}
+.examples button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
 
-  @media (max-width:820px){
-    .hero-grid{grid-template-columns:1fr;gap:28px}
-    .hero-copy{order:2}
-    .shots{grid-template-columns:repeat(4,72%);overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;margin-right:-20px;padding-right:20px}
-    .shots img{scroll-snap-align:start}
-    .three,.press-grid{grid-template-columns:1fr}
-    nav .links a.hide-s{display:none}
-    .say{gap:8px}.say li{font-size:15px;padding:8px 13px}
-  }
-  @media (prefers-reduced-motion:reduce){
-    .her.jump,.tile .sprite{animation:none}
-  }
+/* the gentle ask */
+.ask { background: var(--card); border: 1px solid var(--line); border-radius: 26px; padding: 22px; box-shadow: var(--shadow); }
+.ask .q { font-weight: 800; font-size: 19px; margin: 0; }
+.ask .when { color: var(--muted); font-size: 14px; margin: 2px 0 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: 700 15px var(--body); border-radius: 999px; padding: 9px 16px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
+.chip.first { background: var(--tint); border-color: var(--accent); color: var(--ink); }
+.ask .reply { margin-top: 16px; font-weight: 700; min-height: 1.6em; color: var(--ink); }
+.ask .reply .undo { color: var(--accent); margin-left: 10px; }
+
+/* colour picker */
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 10px; }
+.sw { display: flex; align-items: center; gap: 8px; border: 2px solid var(--line); background: var(--card); color: var(--ink);
+  border-radius: 999px; padding: 5px 12px 5px 5px; font: 700 14px var(--body); cursor: pointer; }
+.sw i { width: 22px; height: 22px; border-radius: 50%; display: block; }
+.sw[aria-pressed="true"] { border-color: var(--accent); background: var(--tint); }
+.skies { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px; }
+.skies figure { margin: 0; }
+.skies img { width: 100%; aspect-ratio: 174 / 81; object-fit: cover; border-radius: 12px; display: block; border: 2px solid var(--card); }
+.skies figcaption { font-family: var(--pixel); font-size: 13px; color: var(--muted); margin-top: 6px; text-align: center; }
+
+/* real screens */
+.screens { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(12px, 2vw, 24px); margin-top: 34px; }
+.screens figure { margin: 0; min-width: 0; }
+.screens img { width: 100%; border-radius: 26px; display: block; box-shadow: var(--shadow); border: 5px solid var(--card); }
+.screens figcaption { text-align: center; font-weight: 700; margin-top: 12px; font-size: 15px; }
+.head-c { text-align: center; max-width: 34em; margin: 0 auto; }
+.head-c p { color: var(--muted); font-size: 18px; margin: 0; }
+
+/* promises */
+.promises { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 30px; }
+.promise { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.promise b { display: block; font-family: var(--display); font-weight: 600; font-size: 20px; margin-bottom: 4px; }
+.promise span { color: var(--muted); font-size: 15px; }
+
+/* close */
+.close { text-align: center; padding-block: clamp(64px, 10vw, 120px); }
+.close .her-big { width: 120px; height: 120px; margin: 0 auto 10px; display: block; }
+.close h2 { margin-bottom: 10px; }
+.close p { color: var(--muted); margin: 0 auto 26px; font-size: 18px; max-width: 26em; }
+.close .cta-row { justify-content: center; }
+
+footer { border-top: 1px solid var(--line); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: center; padding-block: 26px; font-size: 14px; color: var(--muted); }
+footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+footer a { text-decoration: none; font-weight: 700; }
+footer a:hover { color: var(--accent); }
+
+
+/* nav links */
+.nav-right { display: flex; align-items: center; gap: 18px; }
+.nav-links { display: flex; gap: 18px; font-weight: 700; font-size: 15px; }
+.nav-links a { text-decoration: none; color: var(--muted); }
+.nav-links a:hover { color: var(--accent); }
+
+/* before launch the App Store buttons read "Coming soon"; one attribute flips it (see <html data-launched>) */
+.soon { display: none; align-items: center; gap: 10px; background: var(--ink); color: var(--bg); border-radius: 14px; padding: 12px 18px; font-weight: 800; }
+.soon small { font-weight: 600; opacity: .8; font-size: 13px; }
+.soon.sm { padding: 9px 14px; border-radius: 12px; font-size: 15px; }
+html[data-launched="false"] .store { display: none; }
+html[data-launched="false"] .soon { display: inline-flex; }
+
+/* press */
+.press-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(24px, 5vw, 64px); align-items: start; }
+.press-grid > * { min-width: 0; }
+.press-grid p { color: var(--muted); font-size: 17px; max-width: 34em; }
+.facts { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 8px 18px; font-size: 16px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.facts dt { color: var(--muted); font-weight: 700; }
+.facts dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.facts a { color: var(--accent); }
+.assets { margin: 14px 0 0; padding-left: 20px; font-weight: 700; }
+.assets a { color: var(--accent); }
+@media (max-width: 860px) { .press-grid { grid-template-columns: 1fr; } .nav-links .hide-s { display: none; } }
+@media (max-width: 460px) { .nav-links { display: none; } }
+
+@media (max-width: 860px) {
+  .hero, .split { grid-template-columns: 1fr; }
+  .split.flip > :first-child { order: 0; }
+  .screens { grid-template-columns: repeat(4, 72%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+  .screens figure { scroll-snap-align: center; }
+  .promises { grid-template-columns: 1fr 1fr; }
+  .skies { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 460px) {
+  .nav .store.sm small { display: none; }
+  .promises { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .letters i, .caret { animation: none; }
+  .room > img.bg { transition: none; }
+}
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <div class="wrap">
-    <nav>
-      <a class="brand" href="./"><img src="assets/icon-256.png" alt="">Mochi</a>
-      <div class="links"><a class="hide-s" href="#press">Press</a><a href="support.html">Support</a><a href="privacy.html">Privacy</a></div>
-    </nav>
 
-    <div class="hero-grid">
-      <div class="hero-copy">
-        <h1>Reminders that don't nag.</h1>
-        <p class="lede">Mochi shows you today from your own Reminders and Calendar, and changes it when you tell her.</p>
-        <div class="cta">
-          <span class="pill" aria-label="Coming soon to the App Store">Coming soon <small>App Store · iPhone</small></span>
-        </div>
-        <p class="facts">Free. No account. No ads. No tracking.</p>
-      </div>
-
-      <div class="stage-card">
-        <div class="stage" id="stage" role="img" aria-label="Mochi standing in her pixel-art room">
-          <div class="bubble" id="bubble">The vet, then the parcel, then stretch.</div>
-          <button class="her pixel" id="her" type="button" aria-label="Tap Mochi to tick one off"></button>
-        </div>
-        <div class="stage-foot">
-          <span>Tap her to tick one off</span>
-          <div class="swatches" role="group" aria-label="Room colour">
-            <button class="sw" type="button" data-room="day" aria-pressed="true" aria-label="Berry" style="background:#E7A6BD"></button>
-            <button class="sw" type="button" data-room="mint" aria-pressed="false" aria-label="Mint" style="background:#A9D9C0"></button>
-            <button class="sw" type="button" data-room="sky" aria-pressed="false" aria-label="Sky" style="background:#A8CBEB"></button>
-            <button class="sw" type="button" data-room="lavender" aria-pressed="false" aria-label="Lavender" style="background:#C6B4E6"></button>
-            <button class="sw" type="button" data-room="peach" aria-pressed="false" aria-label="Peach" style="background:#F3C0A2"></button>
-          </div>
-        </div>
-      </div>
-    </div>
+<header class="wrap nav">
+  <a class="brand" href="#top" aria-label="Mochi, home"><img src="img/icon.png" alt="">Mochi</a>
+  <div class="nav-right">
+  <nav class="nav-links" aria-label="Site"><a class="hide-s" href="#press">Press</a><a href="support.html">Support</a><a href="privacy.html">Privacy</a></nav>
+  <span class="soon sm" aria-label="Coming soon to the App Store">Coming soon</span>
+  <a class="store sm" href="https://apps.apple.com/app/id6812625992">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.62c.02 2.47 2.17 3.29 2.19 3.3-.02.06-.34 1.17-1.13 2.33-.68 1-1.39 1.99-2.5 2.01-1.1.02-1.45-.65-2.7-.65-1.26 0-1.65.63-2.69.67-1.07.04-1.89-1.08-2.58-2.08-1.4-2.03-2.47-5.74-1.03-8.24.71-1.24 1.99-2.03 3.38-2.05 1.05-.02 2.05.71 2.69.71.64 0 1.86-.88 3.14-.75.53.02 2.03.21 3 1.63-.08.05-1.79 1.05-1.77 3.12M14.3 4.97c.57-.69.95-1.65.85-2.61-.82.03-1.82.55-2.41 1.24-.53.61-.99 1.59-.87 2.53.92.07 1.85-.47 2.43-1.16"/></svg>
+    <div><small>Download on the</small><span>App Store</span></div>
+  </a>
   </div>
 </header>
 
-<main>
-  <section>
-    <div class="wrap">
-      <p class="kicker">Tap her and say it</p>
-      <h2>Say it. It moves.</h2>
-      <p class="sub">She does it in your real Reminders and tells you in one line, with Undo right there. Ask her, too.</p>
-      <ul class="say">
-        <li>Dentist tomorrow at 3.</li>
-        <li>Move the vet to Friday.</li>
-        <li>Not doing the gym today.</li>
-        <li>Clear my afternoon.</li>
-        <li>Done with the gym.</li>
-        <li>What's next?</li>
-        <li>What's on Friday?</li>
-      </ul>
-      <div class="shots">
-        <img src="assets/shot-1-her-room-your-day.jpg" width="506" height="1100" loading="lazy" alt="Her room above your day: your reminders and calendar in the morning, afternoon and evening.">
-        <img src="assets/shot-2-say-it-it-moves.jpg" width="506" height="1100" loading="lazy" alt="Typing “move the vet to Friday” and the reminder moves, with Undo.">
-        <img src="assets/shot-3-no-guilt-no-red.jpg" width="506" height="1100" loading="lazy" alt="Something missed is asked about once, gently. Nothing red.">
-        <img src="assets/shot-4-her-room-in-your-colour.jpg" width="506" height="1100" loading="lazy" alt="Five room colours; her widget and Lock Screen follow.">
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <p class="eyebrow">Your day, gently · iPhone</p>
+      <h1>A to-do list that's <em>fine to open.</em></h1>
+      <p class="lede">Mochi shows you today from your own Reminders and Calendar, and changes it when you tell her. No overdue pile. No red. No "you still haven't."</p>
+      <div class="cta-row">
+        <span class="soon" aria-label="Coming soon to the App Store">Coming soon <small>App Store · iPhone</small></span>
+        <a class="store" href="https://apps.apple.com/app/id6812625992">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.62c.02 2.47 2.17 3.29 2.19 3.3-.02.06-.34 1.17-1.13 2.33-.68 1-1.39 1.99-2.5 2.01-1.1.02-1.45-.65-2.7-.65-1.26 0-1.65.63-2.69.67-1.07.04-1.89-1.08-2.58-2.08-1.4-2.03-2.47-5.74-1.03-8.24.71-1.24 1.99-2.03 3.38-2.05 1.05-.02 2.05.71 2.69.71.64 0 1.86-.88 3.14-.75.53.02 2.03.21 3 1.63-.08.05-1.79 1.05-1.77 3.12M14.3 4.97c.57-.69.95-1.65.85-2.61-.82.03-1.82.55-2.41 1.24-.53.61-.99 1.59-.87 2.53.92.07 1.85-.47 2.43-1.16"/></svg>
+          <div><small>Download on the</small><span>App Store</span></div>
+        </a>
+      </div>
+      <p class="fine">Free · No account · No ads · No tracking</p>
+    </div>
+
+    <div class="stage" aria-label="Mochi in her room, sipping coffee, saying what's next today">
+      <div class="room" id="heroRoom">
+        <img class="bg px" id="roomA" src="img/RoomPinkDeskDay.png" alt="">
+        <img class="bg px next" id="roomB" src="img/RoomPinkDeskDay.png" alt="">
+        <img class="her px" id="her" src="img/sip01.png" alt="">
+        <div class="bubble" id="bubble" aria-live="polite"></div>
+      </div>
+      <div class="bar" aria-hidden="true">
+        <div class="face"><img class="px" src="img/AssistantFace.png" alt=""></div>
+        <span class="name">Mochi</span>
+        <span class="typed"></span>
+        <span class="mic"><svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg></span>
+      </div>
+    </div>
+  </div>
+
+  <section class="band alt" id="say">
+    <div class="wrap split">
+      <div class="copy">
+        <p class="eyebrow">Tap her. Say it.</p>
+        <h2>Say it, and your day changes.</h2>
+        <p>Tap her face and type a sentence, or say it. She does it in your <strong>real Reminders</strong> and tells you in one line, with <strong>Undo</strong> right there.</p>
+        <p>She reads you the way you mean it. "School run 8:40" is the morning. A birthday "every year" comes back every year. When a time could go either way, the other one is a single tap.</p>
+      </div>
+      <div class="demo" id="demo">
+        <div class="said"><div class="receipt" id="receipt"><span id="receiptText"></span><span class="undo">Undo</span></div></div>
+        <hr>
+        <div class="line">
+          <div class="face"><img class="px" src="img/AssistantFace.png" alt=""></div>
+          <div class="letters" id="letters" aria-live="polite"></div>
+        </div>
+        <div class="examples" id="examples" role="group" aria-label="Try a sentence"></div>
       </div>
     </div>
   </section>
 
-  <section>
-    <div class="wrap">
-      <p class="kicker">Why she's different</p>
-      <h2>Your list, without the dread.</h2>
-      <div class="three">
-        <div class="tile">
-          <div class="sprite" role="img" aria-label="Mochi writing at her desk"></div>
-          <h3>One page, one day</h3>
-          <p>Your reminders and your calendar together, in the parts of your day. Nothing lives inside Mochi — she reads the Reminders and Calendar you already have and never keeps a second copy.</p>
+  <section class="band" id="gentle">
+    <div class="wrap split flip">
+      <div class="copy">
+        <p class="eyebrow">No guilt. No red.</p>
+        <h2>She asks once, gently. Then she's quiet.</h2>
+        <p>Something you didn't get to isn't a red number that grows. She asks about it once: move it, leave it, or put it in the drawer, where things without a day stay out of your way and never get lost.</p>
+        <p>Finish the day and she turns the page to tomorrow.</p>
+      </div>
+      <div class="ask" id="ask">
+        <p class="q">Dentist slipped from yesterday.</p>
+        <p class="when">Tue · 9 AM</p>
+        <div class="chips">
+          <button class="chip first" data-r="Moved the dentist to today at 9 AM.">Move it</button>
+          <button class="chip" data-r="Put the dentist in the drawer.">Drawer</button>
+          <button class="chip" data-r="Removed the dentist.">Remove</button>
+          <button class="chip" data-r="Leaving it where it is.">Leave it</button>
         </div>
-        <div class="tile">
-          <div class="sprite sip" role="img" aria-label="Mochi sipping from her mug"></div>
-          <h3>She never makes you feel bad</h3>
-          <p>No overdue pile. No red. No “you still haven't.” Something you didn't get to is asked about once, gently — then she's quiet. When it's all too much, ask her to walk you through it, one thing at a time.</p>
+        <p class="reply" id="askReply" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band alt" id="colour">
+    <div class="wrap split">
+      <div class="copy">
+        <p class="eyebrow">Her room, your colour</p>
+        <h2>Pick her colour. Everything follows.</h2>
+        <p>Berry, mint, sky, lavender or peach. One tap, and her room, her Home Screen widget and her Lock Screen card all change together.</p>
+        <div class="swatches" id="swatches" role="group" aria-label="Choose her colour">
+          <button class="sw" data-t="berry" aria-pressed="true"><i style="background:#e85991"></i>Berry</button>
+          <button class="sw" data-t="mint" aria-pressed="false"><i style="background:#2ead85"></i>Mint</button>
+          <button class="sw" data-t="sky" aria-pressed="false"><i style="background:#4791e8"></i>Sky</button>
+          <button class="sw" data-t="lavender" aria-pressed="false"><i style="background:#8c6bd9"></i>Lavender</button>
+          <button class="sw" data-t="peach" aria-pressed="false"><i style="background:#e67852"></i>Peach</button>
         </div>
-        <div class="tile">
-          <div class="rooms" aria-hidden="true"><img class="pixel" src="assets/room-day.png" alt=""><img class="pixel" src="assets/room-mint.png" alt=""><img class="pixel" src="assets/room-sky.png" alt=""><img class="pixel" src="assets/room-lavender.png" alt=""><img class="pixel" src="assets/room-peach.png" alt=""></div>
-          <h3>Her room, in your colour</h3>
-          <p>Berry, mint, sky, lavender or peach. One tap, and her room, her Home Screen widget and her Lock Screen wallpaper all follow.</p>
+      </div>
+      <div>
+        <div class="room" id="colourRoom"><img class="bg px" id="colourImg" src="img/RoomPinkDeskDay.png" alt="Mochi's room in berry"><img class="her px" src="img/AssistantIdle.png" alt=""></div>
+        <div class="skies" aria-label="Her room follows your sky">
+          <figure><img class="px" src="img/RoomPinkDeskGoldenHour.png" alt="Her room at golden hour"><figcaption>Golden hour</figcaption></figure>
+          <figure><img class="px" src="img/RoomPinkDeskRainDay.png" alt="Her room on a rainy day"><figcaption>Rain</figcaption></figure>
+          <figure><img class="px" src="img/RoomPinkDeskSnowDay.png" alt="Her room on a snowy day"><figcaption>Snow</figcaption></figure>
+          <figure><img class="px" src="img/RoomPinkDeskNight.png" alt="Her room at night"><figcaption>Night</figcaption></figure>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="close">
+  <section class="band" id="screens">
     <div class="wrap">
-      <h2>Made for people who already have a Reminders app and dread opening it.</h2>
-      <div class="cta">
-        <span class="pill">Coming soon <small>App Store · iPhone</small></span>
+      <div class="head-c">
+        <p class="eyebrow">The real thing</p>
+        <h2>One page. One day.</h2>
+        <p>Your reminders and calendar together, in the parts of your day. Nothing lives inside Mochi. She reads the Reminders and Calendar you already have.</p>
+      </div>
+      <div class="screens">
+        <figure><img src="img/1-her-room-today.jpg" alt="Mochi's room above today's day: morning, afternoon, evening" loading="lazy"><figcaption>Her room. Your day.</figcaption></figure>
+        <figure><img src="img/2-say-it-and-it-moves.jpg" alt="Her line: Moved Call the vet back to Friday, with Undo" loading="lazy"><figcaption>Say it. It moves.</figcaption></figure>
+        <figure><img src="img/3-no-guilt.jpg" alt="Dentist slipped from yesterday, with Move it, Drawer, Remove, Leave it" loading="lazy"><figcaption>No guilt. No red.</figcaption></figure>
+        <figure><img src="img/4-her-room-your-colour.jpg" alt="Customize: five room colours" loading="lazy"><figcaption>In your colour.</figcaption></figure>
       </div>
     </div>
   </section>
 
-  <section class="press" id="press">
+  <section class="band alt" id="promise">
+    <div class="wrap">
+      <div class="head-c">
+        <p class="eyebrow">What she won't do</p>
+        <h2>Your list stays yours.</h2>
+      </div>
+      <div class="promises">
+        <div class="promise"><b>No account</b><span>Nothing to sign up for. Open it and she's there.</span></div>
+        <div class="promise"><b>No second copy</b><span>Your reminders stay in Reminders. She never keeps her own.</span></div>
+        <div class="promise"><b>No ads, no tracking</b><span>No analytics, no ad networks, no third-party code.</span></div>
+        <div class="promise"><b>No streaks</b><span>No scores, no guilt trips. Just the next thing.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band alt" id="press">
     <div class="wrap press-grid">
       <div>
-        <p class="kicker">For press</p>
+        <p class="eyebrow">For press</p>
         <h2>Mochi, in a paragraph</h2>
-        <p class="sub">Mochi is a free iPhone app for people whose to-do list makes them feel bad. A small pixel-art companion shows today from the person's own Apple Reminders and Calendar, and changes it when they tell her in a plain sentence — “move the vet to Friday” — with Undo. No account, no overdue pile, no red, and nothing kept outside Apple's own apps. Made by Berrylime Labs, a one-person studio.</p>
+        <p>Mochi is a free iPhone app for people whose to-do list makes them feel bad. A small pixel-art companion shows today from the person's own Apple Reminders and Calendar, and changes it when they tell her in a plain sentence, like "move the vet to Friday", with Undo. No account, no overdue pile, no red, and nothing kept outside Apple's own apps. Made by Berrylime Labs, a one-person studio.</p>
       </div>
       <div>
-        <dl>
+        <dl class="facts">
           <dt>Price</dt><dd>Free</dd>
           <dt>Platform</dt><dd>iPhone, iOS 26.5 or later</dd>
           <dt>Category</dt><dd>Productivity</dd>
           <dt>Contact</dt><dd><a href="mailto:support@berrylimeapps.com">support@berrylimeapps.com</a></dd>
         </dl>
-        <ul>
-          <li><a href="assets/icon-256.png">App icon</a></li>
-          <li><a href="assets/shot-1-her-room-your-day.jpg">Screenshots</a> (four, 6.9-inch)</li>
+        <ul class="assets">
+          <li><a href="press/mochi-press-kit.zip" download><strong>Press kit</strong></a> (.zip, 28 MB: icon, screenshots, art, five clips, facts)</li>
+          <li><a href="img/icon.png">App icon</a> (1024 px)</li>
+          <li><a href="img/1-her-room-today.jpg">Screenshots</a> (four, 6.9-inch)</li>
+          <li><a href="img/og.png">Share card</a> (1200 × 630)</li>
         </ul>
       </div>
+    </div>
+  </section>
+
+  <section class="close wrap">
+    <img class="her-big px" src="img/AssistantPajamasThumbsUp02.png" alt="Mochi in pyjamas giving a thumbs up">
+    <h2>Meet Mochi.</h2>
+    <p>For anyone who already has a Reminders app and dreads opening it.</p>
+    <div class="cta-row">
+      <span class="soon" aria-label="Coming soon to the App Store">Coming soon <small>App Store · iPhone</small></span>
+      <a class="store" href="https://apps.apple.com/app/id6812625992">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.62c.02 2.47 2.17 3.29 2.19 3.3-.02.06-.34 1.17-1.13 2.33-.68 1-1.39 1.99-2.5 2.01-1.1.02-1.45-.65-2.7-.65-1.26 0-1.65.63-2.69.67-1.07.04-1.89-1.08-2.58-2.08-1.4-2.03-2.47-5.74-1.03-8.24.71-1.24 1.99-2.03 3.38-2.05 1.05-.02 2.05.71 2.69.71.64 0 1.86-.88 3.14-.75.53.02 2.03.21 3 1.63-.08.05-1.79 1.05-1.77 3.12M14.3 4.97c.57-.69.95-1.65.85-2.61-.82.03-1.82.55-2.41 1.24-.53.61-.99 1.59-.87 2.53.92.07 1.85-.47 2.43-1.16"/></svg>
+        <div><small>Download on the</small><span>App Store</span></div>
+      </a>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap">
-    <span>Berrylime Labs LLC</span>
-    <span><a href="support.html">Support</a> · <a href="privacy.html">Privacy</a> · <a href="mailto:support@berrylimeapps.com">support@berrylimeapps.com</a></span>
+    <span>© 2026 Berrylime Labs LLC</span>
+    <nav aria-label="Footer">
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:support@berrylimeapps.com">support@berrylimeapps.com</a>
+    </nav>
   </div>
 </footer>
 
 <script>
 (() => {
-  const her = document.getElementById('her'), bubble = document.getElementById('bubble'), stage = document.getElementById('stage');
-  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // her real lines: the brief from her room, one "Done —" per tick, then the day's close. A jump only ever means done.
-  const lines = ['The vet, then the parcel, then stretch.', 'Done — Vet.', 'Done — Parcel.', 'Done — Stretch.', 'All done for today.'];
-  let n = 0, jumping = false;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const dark = () => document.documentElement.dataset.theme === "dark" ||
+    (!document.documentElement.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
 
-  // a blink every few seconds, never while she jumps
-  const blink = () => {
-    if (!jumping && !still) { her.classList.add('blink'); setTimeout(() => her.classList.remove('blink'), 140); }
-    setTimeout(blink, 2600 + Math.random() * 3200);
-  };
-  setTimeout(blink, 1800);
+  // ---- her: sipping, with pauses, then a line in her bubble ----
+  const her = document.getElementById("her");
+  const frames = ["01","02","03","04","05","06","07","08","09"].map(n => `img/sip${n}.png`);
+  frames.forEach(src => { const i = new Image(); i.src = src; });
+  let f = 0;
+  function sip() {
+    if (reduce) return;
+    her.src = frames[f];
+    f = (f + 1) % frames.length;
+    setTimeout(sip, f === 0 ? 2600 : 130);
+  }
+  sip();
 
-  her.addEventListener('click', () => {
-    if (jumping) return;
-    n = (n + 1) % lines.length;
-    bubble.textContent = lines[n];
-    if (n === 0 || still) return;
-    jumping = true; her.classList.remove('blink'); her.classList.add('jump');
-    her.addEventListener('animationend', () => { her.classList.remove('jump'); jumping = false; }, { once: true });
+  const bubble = document.getElementById("bubble");
+  const lines = ["The vet, then the parcel, then stretch.", "Just the tiny picnic at 7 tonight.", "Your evening is open."];
+  let li = 0;
+  function say() {
+    const text = lines[li]; li = (li + 1) % lines.length;
+    if (reduce) { bubble.textContent = text; setTimeout(say, 5000); return; }
+    bubble.textContent = ""; let n = 0;
+    const t = setInterval(() => { bubble.textContent = text.slice(0, ++n); if (n >= text.length) { clearInterval(t); setTimeout(say, 4200); } }, 38);
+  }
+  say();
+
+  // In the dark, her room is at night.
+  const roomA = document.getElementById("roomA"), roomB = document.getElementById("roomB");
+  function setHeroRoom(src) { roomB.src = src; roomB.classList.remove("next"); setTimeout(() => { roomA.src = src; roomB.classList.add("next"); }, 460); }
+  let heroSrc = "img/RoomPinkDeskDay.png";
+  function syncNight() { const want = dark() ? "img/RoomPinkDeskNight.png" : currentRoom; if (want !== heroSrc) { heroSrc = want; setHeroRoom(want); } }
+
+  // ---- demo: the letters land, then her line comes back ----
+  const examples = [
+    { typed: "dentist tomorrow at 3", said: "Added dentist for tomorrow at 3 PM." },
+    { typed: "move the vet to friday", said: "Moved Call the vet back to Friday." },
+    { typed: "not doing the gym today", said: "Moved gym to tomorrow." },
+    { typed: "school run 8:40", said: "Added school run for tomorrow at 8:40 AM." },
+    { typed: "mum's birthday may 12 every year", said: "Added Mum's birthday for May 12, every year." }
+  ];
+  const letters = document.getElementById("letters"), receipt = document.getElementById("receipt"), receiptText = document.getElementById("receiptText");
+  const exWrap = document.getElementById("examples");
+  let ex = 0, timer = null;
+  examples.forEach((e, i) => {
+    const b = document.createElement("button"); b.type = "button"; b.textContent = e.typed; b.setAttribute("aria-pressed", "false");
+    b.addEventListener("click", () => { clearTimeout(timer); ex = i; run(); });
+    exWrap.appendChild(b);
   });
+  function run() {
+    const e = examples[ex];
+    [...exWrap.children].forEach((b, i) => b.setAttribute("aria-pressed", String(i === ex)));
+    receipt.classList.remove("on"); letters.innerHTML = '<span class="caret"></span>';
+    let n = 0;
+    const step = () => {
+      if (n < e.typed.length) {
+        const ch = e.typed[n++];
+        const node = document.createElement("i"); node.textContent = ch;
+        letters.insertBefore(node, letters.lastChild);
+        timer = setTimeout(step, reduce ? 0 : 55 + Math.random() * 45);
+      } else {
+        timer = setTimeout(() => {
+          letters.innerHTML = '<span class="caret"></span>';
+          receiptText.textContent = e.said; receipt.classList.add("on");
+          ex = (ex + 1) % examples.length;
+          timer = setTimeout(run, 3200);
+        }, 450);
+      }
+    };
+    step();
+  }
+  run();
 
-  document.querySelectorAll('.sw').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('.sw').forEach(x => x.setAttribute('aria-pressed', x === b));
-    stage.style.backgroundImage = `url(assets/room-${b.dataset.room}.png)`;
+  // ---- the gentle ask ----
+  const reply = document.getElementById("askReply");
+  document.querySelectorAll("#ask .chip").forEach(c => c.addEventListener("click", () => {
+    reply.innerHTML = ""; const s = document.createElement("span"); s.textContent = c.dataset.r;
+    const u = document.createElement("span"); u.className = "undo"; u.textContent = "Undo";
+    reply.append(s, u);
   }));
-  // warm the other rooms and her jump so a tap never flashes empty
-  ['room-mint','room-sky','room-lavender','room-peach','mochi-jump'].forEach(r => { const i = new Image(); i.src = `assets/${r}.png`; });
+
+  // ---- her colour ----
+  const themes = {
+    berry:    { accent: "#e85991", tint: "#ffe8f2", tintD: "#3a2a45", room: "RoomPinkDeskDay" },
+    mint:     { accent: "#2ead85", tint: "#e3faf0", tintD: "#1f3a36", room: "RoomPinkDeskMintDay" },
+    sky:      { accent: "#4791e8", tint: "#e3f2ff", tintD: "#1f2f48", room: "RoomPinkDeskSkyDay" },
+    lavender: { accent: "#8c6bd9", tint: "#f0e8ff", tintD: "#2d2748", room: "RoomPinkDeskLavenderDay" },
+    peach:    { accent: "#e67852", tint: "#ffede0", tintD: "#3d2a28", room: "RoomPinkDeskPeachDay" }
+  };
+  let currentRoom = "img/RoomPinkDeskDay.png";
+  const colourImg = document.getElementById("colourImg");
+  function applyTheme(name) {
+    const t = themes[name]; const root = document.documentElement.style;
+    root.setProperty("--accent", t.accent);
+    root.setProperty("--tint", dark() ? t.tintD : t.tint);
+    currentRoom = `img/${t.room}.png`;
+    colourImg.src = currentRoom; colourImg.alt = `Mochi's room in ${name}`;
+    document.querySelectorAll("#swatches .sw").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.t === name)));
+    syncNight();
+    try { localStorage.setItem("mochi-colour", name); } catch (e) {}
+  }
+  document.querySelectorAll("#swatches .sw").forEach(b => b.addEventListener("click", () => applyTheme(b.dataset.t)));
+  let saved = "berry"; try { saved = localStorage.getItem("mochi-colour") || "berry"; } catch (e) {}
+  applyTheme(themes[saved] ? saved : "berry");
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => applyTheme(document.querySelector('#swatches [aria-pressed="true"]').dataset.t));
+  new MutationObserver(() => applyTheme(document.querySelector('#swatches [aria-pressed="true"]').dataset.t)).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 })();
 </script>
+
 </body>
 </html>
