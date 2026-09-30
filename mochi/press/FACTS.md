@@ -49,7 +49,7 @@ Calendar. Full policy: https://berrylime-inc.github.io/mochi/privacy.html
 | `screenshots/raw-*.png` | The same screens without captions |
 | `art/room-*.png` | Her room in all five colours and four skies, pixel-perfect at 8× |
 | `art/mochi-*.png` | Mochi standing, sipping, in pyjamas, and her face, pixel-perfect at 12–16× |
-| `video/post-*.mp4` | Five short vertical clips, 1080 × 1920, recorded from the app |
+| `video/post-*.mp4` | Six short vertical clips, 1080 × 1920, recorded from the app |
 
 Pixel art is scaled with nearest-neighbour so it stays crisp; if you resize it, please turn
 smoothing off (or scale by whole numbers).
