@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mochi — Support</title>
 <meta name="description" content="Help with Mochi, and how to reach a person."><style>
-  :root{--bg:#FBF7F0;--ink:#2B2622;--mute:#7A716A;--line:#E8E0D4;--card:#FFFDF9;--lime:#7FA83A;--mochi:#D9558C}
-  @media (prefers-color-scheme:dark){:root{--bg:#1E1A17;--ink:#F3ECE3;--mute:#A79D92;--line:#3B3430;--card:#292420;--lime:#A6CF5E;--mochi:#F07AAA}}
+  :root{--bg:#F6F2EA;--ink:#1E1A1D;--mute:#6A5F64;--line:#E4DACB;--card:#FFFDF8;--lime:#4A7A0C;--mochi:#D9558C}
+  @media (prefers-color-scheme:dark){:root{--bg:#141113;--ink:#F6F1E7;--mute:#B9AEB3;--line:#362E33;--card:#1E1A1D;--lime:#9BE04A;--mochi:#F07AAA}}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, Roboto, sans-serif;font-size:18px;line-height:1.55;padding-block:0 64px;padding-inline:20px}
   .wrap{max-width:640px;margin:0 auto}
   header{padding-block:40px 8px}
-  .mark{display:inline-flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:13px;color:var(--lime);text-decoration:none}
-  .mark i{width:14px;height:14px;border-radius:50%;background:var(--lime);display:inline-block}
+  .mark{display:inline-flex;align-items:center;gap:12px;font:400 14px/1 Arial,Helvetica,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--ink);text-decoration:none}
+  .mark svg{width:28px;height:28px;flex:none}
   h1{font-family:Georgia, 'Times New Roman', serif;font-weight:600;font-size:34px;line-height:1.15;margin:14px 0 6px;letter-spacing:-.01em}
   .sub{color:var(--mute);margin:0 0 28px;font-size:15px}
   h2{font-family:Georgia, 'Times New Roman', serif;font-weight:600;font-size:20px;margin:30px 0 8px}
@@ -20,11 +20,12 @@
   .card{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--mochi);border-radius:16px;padding:18px 20px;margin:24px 0}
   footer{margin-top:44px;color:var(--mute);font-size:14px;border-top:1px solid var(--line);padding-top:16px}
   a{color:inherit}
+  .bl-stamp{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--mute);font:600 11px/1 Arial,Helvetica,sans-serif;letter-spacing:.18em;text-transform:uppercase}.bl-stamp svg{width:22px;height:22px;flex:none}.bl-stamp b{color:var(--ink);font-weight:400;letter-spacing:.24em}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header><a class="mark" href="/"><i></i> Berrylime</a></header>
+  <header><a class="mark" href="/"><svg viewBox="0 0 96 96" aria-hidden="true"><rect width="64" height="64" fill="#D91445"/><rect x="32" y="32" width="64" height="64" fill="#78C514"/><rect x="32" y="32" width="32" height="32" fill="#651735"/></svg> BerryLime</a></header>
 
   <h1>Mochi — Support</h1>
   <p class="sub">A person reads every message.</p>
@@ -46,7 +47,7 @@
   <h2>Erase everything</h2>
   <p>Delete the app; your reminders and events stay in Apple's apps.</p>
 
-  <footer>Berrylime Labs LLC · <a href="https://berrylimeapps.com">berrylimeapps.com</a></footer>
+  <footer>Berrylime Labs LLC · <a href="https://berrylimeapps.com">berrylimeapps.com</a><div style="margin-top:14px"><a class="bl-stamp" href="https://berrylime-inc.github.io/" aria-label="Made by BerryLime Labs"><svg viewBox="0 0 96 96" aria-hidden="true"><rect width="64" height="64" fill="#D91445"/><rect x="32" y="32" width="64" height="64" fill="#78C514"/><rect x="32" y="32" width="32" height="32" fill="#651735"/></svg><span>Made by <b>BerryLime Labs</b></span></a></div></footer>
 </div>
 </body>
 </html>
